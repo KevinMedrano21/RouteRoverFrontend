@@ -7,9 +7,8 @@ const router = express.Router();
 router.get('/ver', async (req, res) => {
     const valores = "hola";
     console.log(valores);
-    res.render('index.ejs',{
-        valores
-    });
+
+    res.render('index.ejs',{valores});
 });
 
 
