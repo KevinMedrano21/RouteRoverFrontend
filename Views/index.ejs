@@ -17,7 +17,7 @@
       }
       .mapa-localizacion{
         margin: auto;
-        height: 460px;
+        height: 500px;
         width: 630px;
         text-align: center;
         margin-left: 3px;
@@ -27,6 +27,13 @@
       .textos{
         color: aliceblue;
         font-style: oblique;
+      }
+      #direccion{
+        margin-top: 16px;
+        width: 600px;
+        height: 50px;
+        color: aliceblue;
+        margin-left: 15px;
       }
 
     </style>
@@ -260,12 +267,15 @@
       <section class="mapa-localizacion">
 
         <div>
+
           <h3 class="textos">Localizacion</h3>
-          <div id="mi_mapa">
-          </div>
+          <div id="mi_mapa"></div>
+          <div id="direccion"></div>
         </div>
 
       </section>
+
+      
       
 
 
@@ -296,25 +306,49 @@
 
   <!-- mapa -->
   <script>
+    window.onload = function() {
+      // Hacer una solicitud AJAX para obtener los datos de la primera API
+      fetch('https://routerover3.onrender.com/ver')
+        .then(response => response.json())
+        .then(data => {
+          // Obtener latitud y longitud de los datos obtenidos
+          var latitud = data[data.length - 1].Latitud;
+          var longitud = data[data.length - 1].Longitud;
 
-window.onload = function() {
-    // Hacer una solicitud AJAX para obtener los datos de la API
-    fetch('https://routerover3.onrender.com/ver')
-      .then(response => response.json())
-      .then(data => {
-        // Crear y configurar el mapa con los datos obtenidos
-        let map = L.map('mi_mapa').setView([data[data.length - 1].Latitud, data[data.length - 1].Longitud], 16);
+          // Crear y configurar el mapa con los datos obtenidos
+          let map = L.map('mi_mapa').setView([latitud, longitud], 16);
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
 
-        L.marker([data[data.length - 1].Latitud, data[data.length - 1].Longitud]).addTo(map);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-  };
+          L.marker([latitud, longitud]).addTo(map);
+
+          // Realizar la segunda solicitud para obtener la dirección utilizando la función obtenerDireccion
+          obtenerDireccion(latitud, longitud);
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos:', error);
+        });
+    };
+
+    function obtenerDireccion(latitud, longitud) {
+      // URL de la API de Nominatim para geolocalización inversa
+      var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitud}&lon=${longitud}`;
+
+      // Realizar una solicitud GET a la API de Nominatim
+      fetch(url)
+          .then(response => response.json())
+          .then(data => {
+              // Extraer la dirección de la respuesta
+              var direccion = data.display_name;
+              // Mostrar la dirección en el elemento HTML correspondiente
+              document.getElementById('direccion').innerText = direccion;
+          })
+          .catch(error => {
+              console.error("Error al obtener la dirección: ", error);
+          });
+    }
   </script>
 
 
