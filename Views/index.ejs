@@ -4,33 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- estilo para el mapa -->
+    <style>
+      #mi_mapa{
+        height: 400px;
+        width: 600px;
+      }
+    </style>
 
     <title>Document</title>
 </head>
 <body>
-    <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Default Card Example</h3>
-          <div class="card-tools">
-            <!-- Buttons, labels, and many other things can be placed here! -->
-            <!-- Here is a label for example -->
-            <span class="badge badge-primary">Label</span>
+
+
+
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard v1</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3>150</h3>
+
+              <p>New Orders</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.card-tools -->
         </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          The body of the card
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+              <p>Bounce Rate</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-          The footer of the card
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>44</h3>
+
+              <p>User Registrations</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
         </div>
-        <!-- /.card-footer -->
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>65</h3>
+
+              <p>Unique Visitors</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
       </div>
-      <!-- /.card -->
-       
+      <!-- /.row -->
+      <!-- Main row -->
+      <div id="mi_mapa"></div>
+
+
+
+        <!-- /.Left col -->
+      </div>
+      <!-- /.row (main row) -->
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <div class="max-w-sm rounded overflow-hidden shadow-lg">
+    <div class="px-6 py-4">
+      <div class="font-bold text-xl mb-2">Localización</div>
+      <p class="text-gray-700 text-base">
+        Latitud: <%= data[0].Latitud %> <br>
+        Longitud: <%= data[0].Longitud %><br>
+        Pitch: <%= data[0].Pitch %><br>
+        Roll: <%= data[0].Roll %><br>
+        Velocidad: <%= data[0].Velocidad %> km/h
+      </p>
+    </div>
+  </div>
+
+
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+
+  <!-- mapa -->
+  <script>
+
+window.onload = function() {
+    // Hacer una solicitud AJAX para obtener los datos de la API
+    fetch('https://routerover3.onrender.com/ver')
+      .then(response => response.json())
+      .then(data => {
+        // Crear y configurar el mapa con los datos obtenidos
+        let map = L.map('mi_mapa').setView([data[data.length - 1].Latitud, data[data.length - 1].Longitud], 16);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([data[data.length - 1].Latitud, data[data.length - 1].Longitud]).addTo(map);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+  };
+  </script>
+
+
 </body>
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
 
 </html>

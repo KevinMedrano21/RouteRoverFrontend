@@ -5,7 +5,10 @@ const app = express();
 const request = require('request');
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs', );
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/mapa', express.static(path.join(__dirname, 'public')));
+
 
 const indexRoutes = require('./Routes/index.js');
 app.use('/',indexRoutes);
