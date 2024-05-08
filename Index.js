@@ -27,11 +27,6 @@ request('https://routerover3.onrender.com/ver', function (error, response , body
 //     })
 
 
-
-//adminlte
-// app.use('/admin', express.static('./node_modules/admin-lte-express/public'))
-// app.use('/', require('admin-lte-express'))
-
 app.listen(app.get('port'), ()=>{
     console.log('Servidor escuchando em el puerto:', app.get('port'));
 });
