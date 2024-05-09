@@ -35,6 +35,14 @@
         color: aliceblue;
         margin-left: 15px;
       }
+      #vibracionChart {
+        display: block;
+        box-sizing: border-box;
+        width: 630px;
+        height: 500px;
+        background-color: aliceblue;
+         /* Esto centra el canvas horizontalmente margin: auto; */
+      }
 
     </style>
 
@@ -264,16 +272,27 @@
       <!-- /.row -->
       <!-- Main row -->
 
-      <section class="mapa-localizacion">
 
-        <div>
+      <!-- ilustraciones -->
 
-          <h3 class="textos">Localizacion</h3>
-          <div id="mi_mapa"></div>
-          <div id="direccion"></div>
-        </div>
+      <div class="ilustraciones">
 
-      </section>
+        <section class="mapa-localizacion">
+
+          <div>
+  
+            <h3 class="textos">Localizacion</h3>
+            <div id="mi_mapa"></div>
+            <div id="direccion"></div>
+          </div>
+  
+        </section>
+  
+        <canvas id="vibracionChart"></canvas>
+
+      </div>
+
+
 
       
       
@@ -303,7 +322,9 @@
   </div> -->
 
 
+  
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 
@@ -357,6 +378,48 @@
           });
     }
   </script>
+
+<script>
+  // Obtener los últimos 5 registros de vibración
+  fetch('https://routerover3.onrender.com/ver')
+      .then(response => response.json())
+      .then(data => {
+          const ultimos5Registros = data.slice(-5);
+
+          // Extraer fechas y valores de vibración
+          const fechas = ultimos5Registros.map(registro => new Date(registro.Fecha).toLocaleString());
+          const valoresVibracion = ultimos5Registros.map(registro => parseFloat(registro.Velocidad));
+
+          // Crear la gráfica
+          const ctx = document.getElementById('vibracionChart').getContext('2d');
+
+
+          const vibracionChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: fechas,
+                  datasets: [{
+                      label: 'Vibración',
+                      data: valoresVibracion,
+                      borderColor: 'blue',
+                      backgroundColor: 'white',
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+          });
+      })
+      .catch(error => {
+          console.error('Error al obtener los datos:', error);
+      });
+</script>
+
 
 
 </body>
