@@ -7,45 +7,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     
-
-    <!-- estilo para el mapa -->
-    <style>
-      #mi_mapa{
-        height: 400px;
-        width: 600px;
-        margin: auto;
-      }
-      .mapa-localizacion{
-        margin: auto;
-        height: 500px;
-        width: 630px;
-        text-align: center;
-        margin-left: 3px;
-        background-color: #2d3039;
-        border-radius: 8px;
-      }
-      .textos{
-        color: aliceblue;
-        font-style: oblique;
-      }
-      #direccion{
-        margin-top: 16px;
-        width: 600px;
-        height: 50px;
-        color: aliceblue;
-        margin-left: 15px;
-      }
-      #vibracionChart {
-        display: block;
-        box-sizing: border-box;
-        width: 630px;
-        height: 500px;
-        background-color: aliceblue;
-         /* Esto centra el canvas horizontalmente margin: auto; */
-      }
-
-    </style>
-
     <title>Document</title>
 </head>
 <body style="background-color:#4d5462;">
@@ -211,6 +172,7 @@
         <div class="col-lg-3 col-6">
           <!-- small box -->
           <div class="small-box bg-info">
+            <!-- <img src="/image/ruta.png" width="100px" height="100px" alt="ruta1"> -->
             <div class="inner">
               <h3><%= data[data.length - 1].Latitud %></h3>
 
@@ -288,8 +250,14 @@
   
         </section>
   
-        <canvas id="vibracionChart"></canvas>
-
+        <section class="section-graf">
+          <div class="container-canva">
+            <h3 class="textosGrafica">Vibraciones</h3>
+            <canvas id="vibracionChart"  class="vibracionesGraf"></canvas>
+          </div>
+          <div class="footer-grafo"> Grafica de vibraciones</div>
+        </section>
+      
       </div>
 
 
@@ -306,29 +274,10 @@
   </section>
 
 
-  <!-- datos prueba -->
-
-  <!-- <div class="max-w-sm rounded overflow-hidden shadow-lg">
-    <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2">Localización</div>
-      <p class="text-gray-700 text-base">
-        Latitud: <%= data[0].Latitud %> <br>
-        Longitud: <%= data[0].Longitud %><br>
-        Pitch: <%= data[0].Pitch %><br>
-        Roll: <%= data[0].Roll %><br>
-        Velocidad: <%= data[0].Velocidad %> km/h
-      </p>
-    </div>
-  </div> -->
-
-
-  
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 
-  <!-- mapa -->
+  <!-- Mapa -->
   <script>
     window.onload = function() {
       // Hacer una solicitud AJAX para obtener los datos de la primera API
@@ -421,7 +370,7 @@
 </script>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 
